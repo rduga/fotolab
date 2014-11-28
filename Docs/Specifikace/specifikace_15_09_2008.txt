@@ -1,0 +1,128 @@
+﻿
+
+
+
+Ročníkový projekt - specifikace – NPRG033
+( FotoLab KGB)
+
+
+
+
+
+
+
+
+
+	Názov:	FotoLab KGB
+	Autor:	Radovan Duga
+	Vedúci projektu:	Mgr. Pavel Surynek 
+	Dátum:	15. Sep. 2008
+
+
+Obsah:
+Obsah
+1. Úvod	1
+2. Zadanie	1
+2.1. Výber témy a motivácia	1
+3. Problematika	1
+3.1. Analýza problematiky a návrh riešenia	1
+4. Implementácia	1
+4.1. Gui	1
+4.2. Shape detectors	2
+4.3. Pattern (Color) detectors	2
+4.4. Dátové štruktúry	2
+4.4.a)Obrázky	2
+4.4.b)Vlastné komponenty	2
+4.5. Použité algoritmy	2
+4.5.a)Gaussov filter (rozmazanie)	2
+4.5.b)Cannyho hranový detektor	3
+4.5.c)“Algoritmus užívateľovej vôle”	3
+4.6. Komunikácia v programe	3
+5. Platforma	3
+5.1. Operačný systém	3
+5.2. Jazyk a použité knižnice	3
+5.3. Vývojové prostredie	3
+6. Kontakt	4
+6.1. Web stránka projektu	4
+6.2. Autor	4
+6.3. Vedúci projektu	4
+
+
+1. Úvod
+Tento dokument zahŕňa podrobnú špecifikáciu ročníkového projektu a popis častí, ktoré by mali byť obsiahnuté vo výslednom diele.
+2. Zadanie
+Zadanie pod názvom FotoLab KGB si kladie za úlohu skonštruovať program, ktorý by v ideálnom prípade dokázal odstrániť požadovaný objekt z fotografie bez povšimnutia. Aby sme sa zo začiatku nepustili do veľkého neznáma, tak pre jednoduchosť uvažujme v pozadí nejakú budovu s jednoduchými tvarmi typu štvorec, obdĺžnik,kosoštvorec a v popredí osobu alebo osoby, ktoré sú pre nás nežiadúce.
+2.1. Výber témy a motivácia
+Téma mazania objektu fotografie ma zaujala kvôli neexistencii jednoznačného riešenia úlohy ako aj pre jej odvážne zadanie, kde sa musí vymyslieť niečo nové a nie už “1000 krát naimplementované”. Zároveň program nemá v úmysle napodobniť klonovacie nástroje mnohých grafických programov, ale skôr úlohu riešit algoritmicky a pomocou nejakých pevne zadefinovaných pravidiel, ktoré sa budú postupne rozširovarovať o ďalšie.
+3. Problematika
+3.1. Analýza problematiky a návrh riešenia
+Riešme problém mazania objektu rozdelením na jednoduchšie podproblémy:
+Ohraničenie súvislých oblastí
+(pomocou hranového detektoru prípadne užívateľom definovaných oblastí)
+Výber oblasti (objektu), ktorá má byť z fotografie zmazaná
+Aplikovať shape detector na pozadie zmazaného objektu (prípadna interakcia užívateľa)
+Aplikovať pattern (color) detector na shape, ktorý zasahuje do zmazanej oblasti.
+Po prevedení týchto krokov by sme mali dosiahnúť požadovaného výsledku, ktorý sa bude dať následne uložiť ako nový obrázok.
+4. Implementácia
+Pojmom modul rozumieme triedu alebo časť kódu vykonávajúcu špecifickú funkciu na obrázok, oblasť a pod.
+Implemntácia programu bude používať objekty spolu so špecifickými vlastnosťami Qt knižnice ako sú signály a sloty. Na báze signálov a slotov bude prebiehať základná komunikácia v programe. Ďalšie komponenty, akými sú napr. Oblasti, budú často preimplementované základné triedy graphics view frameworku (čo je základný koncept v qt pre zobrazovanie položiek na grafickom plátne).
+4.1. Gui
+Grafické užívateľské rozhranie je jednoduché. Umožňuje otvoriť obrázok, vyrezať danú časť, detekovať hrany obrázku, označiť ručne súvislé časti obrázku, ďalej tlačítko Propose, ktoré na základe vybraných oblastí a vyrezanej časti doplní krivky za vyrezanou časťou. Užívateľ má následne možnosť si krivky upraviť podľa vlastnej vôle a po stlačení Process dôjde k doplneniu textur a farieb vo vyrezanej časti.
+4.2. Shape detectors
+Shape detectors budú moduly programu charakterizované tvarom oblasti. Ich úlohou bude nájsť oblasti, ktoré sú časťami definovaného tvaru a následne doplniť krivky tohto tvaru do súvislej oblasti.
+4.3. Pattern (Color) detectors
+Pattern detectors  budú moduly programu, ktorých úlohou je detekovať farbu (neskôr aj textúru) časti shape oblasti a vhodne doplniť chýbajúcu časť. Pre jednoduchosť sa obmedzme na jednoduchú farbu, gradient farby a jednoduchú textúru.
+4.4. Dátové štruktúry
+4.4.a)Obrázky
+Pre načítanie a spracovanie obrázkov sa používa Qt trieda Qimage, ktorá poskytuje hardwarovo nezávislú reprezentáciu obrázkov a priamy prístup k pixelom.
+
+4.4.b)Vlastné komponenty
+Pre zobrazenie oblastí a obrázku v okne sa využíva The Graphics View Framework, ktorý má 2 základné časti: GraphicsScene a GraphicsView. 
+Scéna je to, kde sa umiestňujú grafické oblasti a komponenty, spravuje sa stav oblastí a posielajú oblastiam udalosti z View ako je stlačenie myši.
+View poskytuje pohľad na danú scénu a prepočítava súradnice so scénou a následne posiela scéne události.
+ImageView (interface pre pohľad na obrázok a jeho podifikáciu podľa vstupov z gui)
+Pre výber oblastí z obrázku a vykreslenie na obrázok sa používaju tieto vlastné triedy, ktoré su potomkom triedy QgraphicsRectItem, čo je trieda reprezentujúca obdlžníkovú časť, ktorá može byť pridaná do grafickej scény.
+PolygonItem (reprezentuje polygon, či už ako zmazanú oblasť alebo oblasť súvislosti)
+ImageItem  (interface pre vyrezanie časti obrázku)
+4.5. Použité algoritmy
+Nasledujúce algoritmy budú užitočné pri riešení nášho problému.
+4.5.a)Gaussov filter (rozmazanie)
+Gaussov filter alebo Gaussovo rozmazanie je funkcia pre odstránenie šumu z obrázku. Tento algoritmus bude potrebný v Cannyho hranovom detektore. Gaussov filter je lineárny filter pre odstránenie šumu z obrazu pomocou konvolúcie s maskou. Maska je nejaká matica, ktorej hodnoty sú dané hodnotou gaussovej funkcie.
+Gaussová funkcia pre 2d: G(x,y) = (1/ 2πσ2)e-(x*x+y*y)/(2σ*σ)
+4.5.b)Cannyho hranový detektor
+Cannyho hranový detektor je algoritmus zahrnujúci niekoľko krokov pre detekciu hrán v obraze. Tento algoritmus bude vhodný pre získanie ohraničených oblastí a bude slúžiť ako alternatíva k užívateľom definovaným oblastiam.
+Postup pri detekcii hran:
+Konvolúcia obrazu s gaussovým filtrom (eliminácia šumu)
+Vypočítame prvú deriváciu dx a dy použitím konvolúcie s maticou [-1,0,1] and [1,0,-1]T
+Vypočítame gradient pomocou známeho vzorca: sqrt(dx*dx+dy*dy)
+Prevedieme elimináciu nevýznamných hrán (s histeréziou)
+4.5.c)“Algoritmus užívateľovej vôle”
+Týmto názvom sa nemyslí žiaden konkrétny algoritmus, ale chce sa zdôrazniť to, že objekty na fotografiách môžu mať nekonečne veľa tvarov, preto v tomto programe vsádzame trochu na priazeň užívateľa, ktorý nám dokáže predpovedať súvislé oblasti, ktoré algoritmy nemajú schopnosť “vymyslieť”. Teda, aby o výsledku doplnenia tvaru textury rozhodoval z časti (alebo aj celkom) užívateľ.
+4.6. Komunikácia v programe
+5. Platforma
+5.1. Operačný systém
+Program nemá obmedzenie na konkrétny operačný systém. Program je vyvíjaný pod operačným systémom ArchLinux.
+5.2. Jazyk a použité knižnice
+Program je napísaný v jazyku C++ za použitia knižnice Qt Widget Toolkit (verzia 4.3 al. 4.4). Qt je multiplatformová knižnica, takže nie je problém si daný program skompilovať či už pod Windows, MacOs a Unix alebo na embedded zariadeniach ako je PDA alebo Smartphone.
+5.3. Vývojové prostredie
+Program je vyvíjaný v prostrí Eclipse a pluginov CDT (C/C++ Development Toolkit) a Qt Eclipse Integration (integrácia Qt Designera, qmake a ďalších qt utilít do Eclipse)
+6. Kontakt
+6.1. Web stránka projektu
+URL: http://lookatthis.ic.cz/this-project/FotoLab-KGB/
+6.2. Autor
+Radovan Duga
+Hurbanova 10
+907 01 Myjava, Slovak Republic
+E-mail: radooo.php5@gmail.com
+URL: http://lookatthis.ic.cz/
+6.3. Vedúci projektu
+Pavel Surynek
+Charles University in Prague
+Faculty of Mathematics and Physics
+Department of Theoretical Computer Science and Mathematical Logic
+Malostranské náměstí 2/25
+118 00 Praha 1, Czech Republic 
+
+E-mail: surynek(AT)ktiml.mff.cuni.cz
+URL: http://ktiml.mff.cuni.cz/~surynek 
+

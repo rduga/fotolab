@@ -1,0 +1,217 @@
+<ui version="4.0" >
+ <class>DialogSettingsClass</class>
+ <widget class="QDialog" name="DialogSettingsClass" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>298</width>
+    <height>291</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Settings</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" >
+   <item>
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="currentIndex" >
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tab" >
+      <attribute name="title" >
+       <string>EdgeDetection</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout" >
+       <item row="0" column="0" >
+        <widget class="QLabel" name="label" >
+         <property name="text" >
+          <string>Sigma:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" >
+        <widget class="QDoubleSpinBox" name="doubleSpinEdgeSigma" >
+         <property name="prefix" >
+          <string/>
+         </property>
+         <property name="singleStep" >
+          <double>1.050000000000000</double>
+         </property>
+         <property name="value" >
+          <double>1.800000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QLabel" name="label_2" >
+         <property name="text" >
+          <string>Low treshold:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" >
+        <widget class="QDoubleSpinBox" name="doubleSpinEdgeTlow" >
+         <property name="prefix" >
+          <string/>
+         </property>
+         <property name="singleStep" >
+          <double>0.050000000000000</double>
+         </property>
+         <property name="value" >
+          <double>0.200000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" >
+        <widget class="QLabel" name="label_3" >
+         <property name="text" >
+          <string>High threshold:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="QDoubleSpinBox" name="doubleSpinEdgeThigh" >
+         <property name="singleStep" >
+          <double>0.050000000000000</double>
+         </property>
+         <property name="value" >
+          <double>0.700000000000000</double>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2" >
+      <attribute name="title" >
+       <string>LineDetection (kht)</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2" >
+       <item row="2" column="0" >
+        <widget class="QLabel" name="label_4" >
+         <property name="text" >
+          <string>Cluster min. size:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" >
+        <widget class="QLabel" name="label_5" >
+         <property name="text" >
+          <string>Cluster min. deviation:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" >
+        <widget class="QLabel" name="label_6" >
+         <property name="text" >
+          <string>Delta:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" >
+        <widget class="QLabel" name="label_7" >
+         <property name="text" >
+          <string>Kernel min. height:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" >
+        <widget class="QLabel" name="label_8" >
+         <property name="text" >
+          <string>Number of sigmas:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" >
+        <widget class="QSpinBox" name="spinLineClustMinSize" >
+         <property name="toolTip" >
+          <string>Minimum number of pixels in the clusters of approximately collinear feature pixels. The default value is 10.</string>
+         </property>
+         <property name="value" >
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" >
+        <widget class="QDoubleSpinBox" name="doubleSpinLineClustMinDev" >
+         <property name="toolTip" >
+          <string>Minimum accepted distance between a feature pixel and the line segment defined by the end points of its cluster. The default value is 2.</string>
+         </property>
+         <property name="value" >
+          <double>2.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1" >
+        <widget class="QDoubleSpinBox" name="doubleSpinLineDelta" >
+         <property name="toolTip" >
+          <string>Discretization step for the parameter space. The default value is 0.5.</string>
+         </property>
+         <property name="value" >
+          <double>0.500000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1" >
+        <widget class="QDoubleSpinBox" name="doubleSpinLineKernelMinH" >
+         <property name="toolTip" >
+          <string>Minimum height for a kernel pass the culling operation. This property is restricted to the [0,1] range. The default value is 0.002.</string>
+         </property>
+         <property name="decimals" >
+          <number>3</number>
+         </property>
+         <property name="value" >
+          <double>0.002000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1" >
+        <widget class="QDoubleSpinBox" name="doubleSpinLineNumberSigmas" >
+         <property name="toolTip" >
+          <string>Number of standard deviations used by the Gaussian kernel. The default value is 2.</string>
+         </property>
+         <property name="value" >
+          <double>2.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QLabel" name="label_9" >
+         <property name="text" >
+          <string>Number of lines</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" >
+        <widget class="QSpinBox" name="spinLineNumber" >
+         <property name="minimum" >
+          <number>10</number>
+         </property>
+         <property name="maximum" >
+          <number>1000</number>
+         </property>
+         <property name="value" >
+          <number>99</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+     <property name="centerButtons" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11" />
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/icons" >
+        <file>close.png</file>
+        <file>color.png</file>
+        <file>document-open.png</file>
+        <file>document-save-as.png</file>
+        <file>edit.png</file>
+        <file>exit.png</file>
+        <file>fill.png</file>
+        <file>help-about.png</file>
+        <file>help-contents.png</file>
+        <file>help-faq.png</file>
+        <file>pen.png</file>
+        <file>process.png</file>
+        <file>qt.png</file>
+        <file>reload.png</file>
+        <file>zoom-in.png</file>
+        <file>zoom-original.png</file>
+        <file>zoom-out.png</file>
+    </qresource>
+</RCC>
